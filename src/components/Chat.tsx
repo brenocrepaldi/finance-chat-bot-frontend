@@ -3,7 +3,12 @@ import { socketService } from '../services/socket';
 import type { Message } from '../types';
 import MessageBubble from './MessageBubble';
 
-export default function Chat() {
+interface ChatProps {
+  token: string;
+  onLogout: () => void;
+}
+
+export default function Chat({ token, onLogout }: ChatProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState('');
   const [isConnected, setIsConnected] = useState(false);
@@ -19,7 +24,7 @@ export default function Chat() {
   }, [messages]);
 
   useEffect(() => {
-    const socket = socketService.connect();
+    const socket = socketService.connect(token);
 
     // Verifica estado inicial da conexão
     setIsConnected(socket.connected);
@@ -44,7 +49,7 @@ export default function Chat() {
       socket.off('disconnect');
       socket.off('bot-message');
     };
-  }, []);
+  }, [token]);
 
   const sendMessage = (e: React.FormEvent) => {
     e.preventDefault();
@@ -88,9 +93,19 @@ export default function Chat() {
                 setMessages([]);
               }
             }}
-            className="text-sm bg-blue-700 hover:bg-blue-800 px-3 py-1 rounded"
+            className="text-sm bg-blue-700 hover:bg-blue-800 px-3 py-1 rounded mr-2"
           >
             Limpar
+          </button>
+          <button
+            onClick={() => {
+              if (confirm('Deseja sair?')) {
+                onLogout();
+              }
+            }}
+            className="text-sm bg-red-600 hover:bg-red-700 px-3 py-1 rounded"
+          >
+            Sair
           </button>
         </div>
       </div>

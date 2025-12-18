@@ -17,12 +17,15 @@ const SOCKET_URL = getSocketUrl();
 class SocketService {
   private socket: Socket | null = null;
 
-  connect() {
+  connect(token: string) {
     if (this.socket?.connected) {
       return this.socket;
     }
 
     this.socket = io(SOCKET_URL, {
+      auth: {
+        token
+      },
       transports: ['websocket', 'polling'],
       reconnection: true,
       reconnectionDelay: 1000,
