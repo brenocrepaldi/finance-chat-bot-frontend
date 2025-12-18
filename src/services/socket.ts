@@ -1,18 +1,7 @@
 import { io, Socket } from 'socket.io-client';
+import { getApiUrl } from '../utils/api';
 
-// Detecta automaticamente o host - se acessar por IP, usa o mesmo IP para o backend
-const getSocketUrl = () => {
-  if (import.meta.env.VITE_SOCKET_URL) {
-    return import.meta.env.VITE_SOCKET_URL;
-  }
-  
-  // Usa o mesmo host que está sendo usado para acessar o frontend
-  const protocol = window.location.protocol;
-  const hostname = window.location.hostname;
-  return `${protocol}//${hostname}:3000`;
-};
-
-const SOCKET_URL = getSocketUrl();
+const SOCKET_URL = getApiUrl();
 
 class SocketService {
   private socket: Socket | null = null;

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { getApiUrl } from '../utils/api';
 
 interface LoginProps {
   onLogin: (token: string) => void;
@@ -15,9 +16,7 @@ export default function Login({ onLogin }: LoginProps) {
     setLoading(true);
 
     try {
-      const protocol = window.location.protocol;
-      const hostname = window.location.hostname;
-      const apiUrl = `${protocol}//${hostname}:3000`;
+      const apiUrl = getApiUrl();
 
       const response = await fetch(`${apiUrl}/auth/login`, {
         method: 'POST',
