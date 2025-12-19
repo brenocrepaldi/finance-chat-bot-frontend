@@ -17,7 +17,9 @@ export default function Chat({ token, onLogout }: ChatProps) {
 	const [isSending, setIsSending] = useState(false);
 	const [showClearModal, setShowClearModal] = useState(false);
 	const [showLogoutModal, setShowLogoutModal] = useState(false);
+	const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
 	const messagesEndRef = useRef<HTMLDivElement>(null);
+	const inputRef = useRef<HTMLInputElement>(null);
 
 	const scrollToBottom = () => {
 		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -26,6 +28,61 @@ export default function Chat({ token, onLogout }: ChatProps) {
 	useEffect(() => {
 		scrollToBottom();
 	}, [messages]);
+
+	// Detecta mudanças na viewport quando teclado abre/fecha
+	useEffect(() => {
+		const handleResize = () => {
+			if (window.visualViewport) {
+				setViewportHeight(window.visualViewport.height);
+			}
+		};
+
+		// Suporta tanto visualViewport quanto fallback para window.resize
+		if (window.visualViewport) {
+			window.visualViewport.addEventListener('resize', handleResize);
+			// Define altura inicial
+			setViewportHeight(window.visualViewport.height);
+		} else {
+			// Fallback para navegadores que não suportam visualViewport
+			const handleWindowResize = () => setViewportHeight(window.innerHeight);
+			window.addEventListener('resize', handleWindowResize);
+			return () => window.removeEventListener('resize', handleWindowResize);
+		}
+
+		return () => {
+			if (window.visualViewport) {
+				window.visualViewport.removeEventListener('resize', handleResize);
+			}
+		};
+	}, []);
+
+	// Força a página a sempre ficar no topo (previne scroll do body)
+	useEffect(() => {
+		const preventPageScroll = () => {
+			window.scrollTo(0, 0);
+			document.body.scrollTop = 0;
+			document.documentElement.scrollTop = 0;
+		};
+
+		// Executa a cada tentativa de scroll
+		window.addEventListener('scroll', preventPageScroll, { passive: true });
+		document.addEventListener('scroll', preventPageScroll, { passive: true });
+		
+		// Força posição inicial
+		preventPageScroll();
+
+		return () => {
+			window.removeEventListener('scroll', preventPageScroll);
+			document.removeEventListener('scroll', preventPageScroll);
+		};
+	}, []);
+
+	// Garante que input fique visível quando focado
+	const handleInputFocus = () => {
+		setTimeout(() => {
+			inputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+		}, 300);
+	};
 
 	useEffect(() => {
 		const socket = socketService.connect(token);
@@ -81,9 +138,12 @@ export default function Chat({ token, onLogout }: ChatProps) {
 	};
 
 	return (
-		<div className="flex flex-col h-dvh bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 overflow-hidden">
-			{/* Header */}
-			<div className="bg-gray-950/80 backdrop-blur-xl border-b border-gray-800/50 shadow-xl">
+		<div 
+			className="flex flex-col bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 overflow-hidden"
+			style={{ height: `${viewportHeight}px`, transition: 'height 0.3s ease-out' }}
+		>
+			{/* Header - Fixed at top */}
+			<div className="flex-shrink-0 bg-gray-950/80 backdrop-blur-xl border-b border-gray-800/50 shadow-xl z-10">
 				<div className="max-w-4xl mx-auto px-4 py-4">
 					<div className="flex items-center justify-between">
 						{/* Logo e Status */}
@@ -140,57 +200,67 @@ export default function Chat({ token, onLogout }: ChatProps) {
 				</div>
 			</div>
 
-			{/* Messages Area */}
-			<div className="flex-1 overflow-y-auto p-4 max-w-4xl w-full mx-auto">
-				{messages.length === 0 && isConnected && (
-					<div className="flex items-center justify-center h-full">
-						<div className="text-center max-w-md animate-fade-in">
-							<div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-emerald-500/20 to-teal-600/20 rounded-3xl mb-6 border border-emerald-500/20">
-								<Sparkles className="w-10 h-10 text-emerald-400" strokeWidth={1.5} />
-							</div>
-							<h2 className="text-xl font-semibold text-white mb-3">Bem-vindo ao Bot Financeiro</h2>
-							<p className="text-gray-400 text-sm mb-6 leading-relaxed">
-								Gerencie suas finanças de forma simples e inteligente. Comece enviando uma mensagem
-								abaixo.
-							</p>
-							<div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800/50 rounded-xl p-4">
-								<p className="text-xs text-gray-400 mb-2">💡 Dica</p>
-								<p className="text-sm text-gray-300">
-									Digite <span className="text-emerald-400 font-semibold">"ajuda"</span> ou{' '}
-									<span className="text-emerald-400 font-semibold">"?"</span> para ver todos os
-									comandos
+			{/* Messages Area - Scrollable content */}
+			<div className="flex-1 overflow-y-auto overscroll-none messages-container" style={{ touchAction: 'pan-y' }}>
+				<div className="p-4 max-w-4xl w-full mx-auto min-h-full flex flex-col">
+					{messages.length === 0 && isConnected && (
+						<div className="flex items-center justify-center flex-1">
+							<div className="text-center max-w-md animate-fade-in">
+								<div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-emerald-500/20 to-teal-600/20 rounded-3xl mb-6 border border-emerald-500/20">
+									<Sparkles className="w-10 h-10 text-emerald-400" strokeWidth={1.5} />
+								</div>
+								<h2 className="text-xl font-semibold text-white mb-3">Bem-vindo ao Bot Financeiro</h2>
+								<p className="text-gray-400 text-sm mb-6 leading-relaxed">
+									Gerencie suas finanças de forma simples e inteligente. Comece enviando uma mensagem
+									abaixo.
 								</p>
+								<div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800/50 rounded-xl p-4">
+									<p className="text-xs text-gray-400 mb-2">💡 Dica</p>
+									<p className="text-sm text-gray-300">
+										Digite <span className="text-emerald-400 font-semibold">"ajuda"</span> ou{' '}
+										<span className="text-emerald-400 font-semibold">"?"</span> para ver todos os
+										comandos
+									</p>
+								</div>
 							</div>
 						</div>
-					</div>
-				)}
+					)}
 
-				{messages.length === 0 && !isConnected && (
-					<div className="flex items-center justify-center h-full">
-						<div className="text-center animate-fade-in">
-							<div className="relative w-16 h-16 mx-auto mb-4">
-								<div className="absolute inset-0 bg-emerald-500/20 rounded-2xl animate-pulse" />
-								<div className="absolute inset-2 bg-emerald-500/40 rounded-xl animate-pulse delay-75" />
-								<div className="absolute inset-4 bg-emerald-500/60 rounded-lg animate-pulse delay-150" />
+					{messages.length === 0 && !isConnected && (
+						<div className="flex items-center justify-center flex-1">
+							<div className="text-center animate-fade-in">
+								<div className="relative w-16 h-16 mx-auto mb-4">
+									<div className="absolute inset-0 bg-emerald-500/20 rounded-2xl animate-pulse" />
+									<div className="absolute inset-2 bg-emerald-500/40 rounded-xl animate-pulse delay-75" />
+									<div className="absolute inset-4 bg-emerald-500/60 rounded-lg animate-pulse delay-150" />
+								</div>
+								<p className="text-sm text-gray-400">Conectando ao servidor...</p>
 							</div>
-							<p className="text-sm text-gray-400">Conectando ao servidor...</p>
 						</div>
-					</div>
-				)}
+					)}
 
-				{messages.map((message) => (
-					<MessageBubble key={message.id} message={message} />
-				))}
-				<div ref={messagesEndRef} />
+					{messages.map((message) => (
+						<MessageBubble key={message.id} message={message} />
+					))}
+					<div ref={messagesEndRef} />
+				</div>
 			</div>
 
-			{/* Input Area */}
-			<div className="bg-gray-950/80 backdrop-blur-xl border-t border-gray-800/50 p-3 sm:p-4 shadow-2xl">
+			{/* Input Area - Fixed at bottom */}
+			<div className="flex-shrink-0 bg-gray-950/80 backdrop-blur-xl border-t border-gray-800/50 p-3 sm:p-4 shadow-2xl z-10">
 				<form onSubmit={sendMessage} className="flex gap-2 sm:gap-3 max-w-4xl mx-auto">
 					<input
+						ref={inputRef}
 						type="text"
+						inputMode="text"
+						enterKeyHint="send"
+						autoComplete="off"
+						autoCorrect="off"
+						autoCapitalize="off"
+						spellCheck="false"
 						value={inputText}
 						onChange={(e) => setInputText(e.target.value)}
+						onFocus={handleInputFocus}
 						placeholder={isConnected ? 'Digite sua mensagem...' : 'Aguardando conexão...'}
 						disabled={!isConnected || isSending}
 						className="flex-1 bg-gray-900/50 border border-gray-800/50 rounded-xl px-4 py-2.5 sm:py-3 text-sm sm:text-base text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 disabled:bg-gray-900/30 disabled:cursor-not-allowed transition-all"
