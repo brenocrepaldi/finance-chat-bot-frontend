@@ -3,6 +3,7 @@ import { socketService } from '../services/socket';
 import type { Message } from '../types';
 import MessageBubble from './MessageBubble';
 import Modal from './Modal';
+import { messageStorage } from '../utils/messageStorage';
 import { Bot, Send, Trash2, LogOut, Wifi, WifiOff, DollarSign } from 'lucide-react';
 
 interface ChatProps {
@@ -11,7 +12,7 @@ interface ChatProps {
 }
 
 export default function Chat({ token, onLogout }: ChatProps) {
-	const [messages, setMessages] = useState<Message[]>([]);
+	const [messages, setMessages] = useState<Message[]>(() => messageStorage.load());
 	const [inputText, setInputText] = useState('');
 	const [isConnected, setIsConnected] = useState(false);
 	const [isSending, setIsSending] = useState(false);
@@ -29,6 +30,11 @@ export default function Chat({ token, onLogout }: ChatProps) {
 
 	useEffect(() => {
 		scrollToBottom();
+	}, [messages]);
+
+	// Salva mensagens no localStorage sempre que mudarem
+	useEffect(() => {
+		messageStorage.save(messages);
 	}, [messages]);
 
 	// Detecta mudanças na viewport quando teclado abre/fecha
@@ -132,6 +138,7 @@ export default function Chat({ token, onLogout }: ChatProps) {
 		});
 
 		socket.on('clear-chat', () => {
+			messageStorage.clear();
 			setMessages([]);
 			setIsSending(false);
 		});
@@ -158,6 +165,7 @@ export default function Chat({ token, onLogout }: ChatProps) {
 					);
 				});
 				// Limpa a fila de pendentes
+				// eslint-disable-next-line react-hooks/set-state-in-effect
 				setPendingMessages([]);
 				setIsSending(true);
 			}
@@ -361,7 +369,10 @@ export default function Chat({ token, onLogout }: ChatProps) {
 			<Modal
 				isOpen={showClearModal}
 				onClose={() => setShowClearModal(false)}
-				onConfirm={() => setMessages([])}
+				onConfirm={() => {
+					messageStorage.clear();
+					setMessages([]);
+				}}
 				title="Limpar mensagens"
 				description="Tem certeza que deseja limpar todas as mensagens? Esta ação não pode ser desfeita."
 				confirmText="Limpar tudo"
