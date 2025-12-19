@@ -18,6 +18,7 @@ export default function Chat({ token, onLogout }: ChatProps) {
 	const [showClearModal, setShowClearModal] = useState(false);
 	const [showLogoutModal, setShowLogoutModal] = useState(false);
 	const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
+	const [pendingMessages, setPendingMessages] = useState<Message[]>([]);
 	const messagesEndRef = useRef<HTMLDivElement>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
 	const messagesContainerRef = useRef<HTMLDivElement>(null);
@@ -143,10 +144,30 @@ export default function Chat({ token, onLogout }: ChatProps) {
 		};
 	}, [token]);
 
+	// Processa mensagens pendentes quando reconectar
+	useEffect(() => {
+		if (isConnected && pendingMessages.length > 0) {
+			const socket = socketService.getSocket();
+			if (socket) {
+				// Envia cada mensagem pendente
+				pendingMessages.forEach((msg) => {
+					socket.emit('user-message', { text: msg.text });
+					// Remove o status pending da mensagem
+					setMessages((prev) =>
+						prev.map((m) => (m.id === msg.id ? { ...m, pending: false } : m))
+					);
+				});
+				// Limpa a fila de pendentes
+				setPendingMessages([]);
+				setIsSending(true);
+			}
+		}
+	}, [isConnected, pendingMessages]);
+
 	const sendMessage = (e: React.FormEvent) => {
 		e.preventDefault();
 
-		if (!inputText.trim() || !isConnected || isSending) {
+		if (!inputText.trim() || isSending) {
 			return;
 		}
 
@@ -155,15 +176,21 @@ export default function Chat({ token, onLogout }: ChatProps) {
 			text: inputText.trim(),
 			sender: 'user',
 			timestamp: new Date().toISOString(),
+			pending: !isConnected, // Marca como pendente se estiver offline
 		};
 
 		setMessages((prev) => [...prev, userMessage]);
-		setIsSending(true);
-
-		const socket = socketService.getSocket();
-		socket?.emit('user-message', { text: inputText.trim() });
-
 		setInputText('');
+
+		if (isConnected) {
+			// Se estiver conectado, envia imediatamente
+			setIsSending(true);
+			const socket = socketService.getSocket();
+			socket?.emit('user-message', { text: userMessage.text });
+		} else {
+			// Se estiver offline, adiciona à fila de pendentes
+			setPendingMessages((prev) => [...prev, userMessage]);
+		}
 	};
 
 	return (
@@ -306,13 +333,13 @@ export default function Chat({ token, onLogout }: ChatProps) {
 						value={inputText}
 						onChange={(e) => setInputText(e.target.value)}
 						onFocus={handleInputFocus}
-						placeholder={isConnected ? 'Digite sua mensagem...' : 'Aguardando conexão...'}
-						disabled={!isConnected || isSending}
+						placeholder={'Digite sua mensagem...'}
+						disabled={isSending}
 						className="flex-1 bg-gray-900/50 border border-gray-800/50 rounded-xl px-4 py-2.5 sm:py-3 text-sm sm:text-base text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 disabled:bg-gray-900/30 disabled:cursor-not-allowed transition-all"
 					/>
 					<button
 						type="submit"
-						disabled={!isConnected || !inputText.trim() || isSending}
+						disabled={!inputText.trim() || isSending}
 						className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl font-medium hover:from-emerald-600 hover:to-teal-700 disabled:from-gray-800 disabled:to-gray-800 disabled:cursor-not-allowed transition-all duration-200 flex items-center gap-2 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 group"
 					>
 						{isSending ? (

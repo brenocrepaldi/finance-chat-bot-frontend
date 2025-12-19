@@ -41,7 +41,9 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
 			{/* Message Bubble */}
 			<div className="flex flex-col max-w-[85%] sm:max-w-[75%] min-w-0">
 				<div
-					className={`rounded-2xl px-4 py-2.5 shadow-lg overflow-hidden ${
+					className={`rounded-2xl px-4 py-2.5 shadow-lg overflow-hidden transition-opacity duration-300 ${
+						message.pending ? 'opacity-50' : 'opacity-100'
+					} ${
 						isUser
 							? 'bg-gradient-to-br from-blue-500 to-indigo-600 text-white rounded-tr-sm'
 							: 'bg-gray-900/50 backdrop-blur-sm border border-gray-800/50 text-gray-100 rounded-tl-sm'
