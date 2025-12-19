@@ -4,7 +4,7 @@ import type { Message } from '../types';
 import MessageBubble from './MessageBubble';
 import Modal from './Modal';
 import { messageStorage } from '../utils/messageStorage';
-import { Bot, Send, Trash2, LogOut, Wifi, WifiOff, DollarSign } from 'lucide-react';
+import { Bot, Send, Trash2, LogOut, Wifi, WifiOff, DollarSign, RefreshCw } from 'lucide-react';
 
 interface ChatProps {
 	token: string;
@@ -20,9 +20,17 @@ export default function Chat({ token, onLogout }: ChatProps) {
 	const [showLogoutModal, setShowLogoutModal] = useState(false);
 	const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
 	const [pendingMessages, setPendingMessages] = useState<Message[]>([]);
+	const [isRefreshing, setIsRefreshing] = useState(false);
 	const messagesEndRef = useRef<HTMLDivElement>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
 	const messagesContainerRef = useRef<HTMLDivElement>(null);
+
+	const handleRefresh = () => {
+		setIsRefreshing(true);
+		const reloadedMessages = messageStorage.load();
+		setMessages(reloadedMessages);
+		setTimeout(() => setIsRefreshing(false), 500);
+	};
 
 	const scrollToBottom = () => {
 		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -243,8 +251,15 @@ export default function Chat({ token, onLogout }: ChatProps) {
 
 						{/* Ações */}
 						<div className="flex items-center gap-2">
-							<button
-								onClick={() => setShowClearModal(true)}
+							<button							onClick={handleRefresh}
+							disabled={isRefreshing}
+							className="flex items-center gap-1.5 px-3 py-2 text-gray-400 hover:text-emerald-400 hover:bg-emerald-500/10 rounded-lg transition-all text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+							title="Recarregar mensagens"
+						>
+							<RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+							<span className="hidden sm:inline">Recarregar</span>
+						</button>
+						<button								onClick={() => setShowClearModal(true)}
 								className="flex items-center gap-1.5 px-3 py-2 text-gray-400 hover:text-white hover:bg-gray-800/50 rounded-lg transition-all text-sm"
 								title="Limpar mensagens"
 							>
