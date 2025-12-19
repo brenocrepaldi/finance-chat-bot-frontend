@@ -3,7 +3,7 @@ import { socketService } from '../services/socket';
 import type { Message } from '../types';
 import MessageBubble from './MessageBubble';
 import Modal from './Modal';
-import { Bot, Send, Trash2, LogOut, Wifi, WifiOff, Sparkles } from 'lucide-react';
+import { Bot, Send, Trash2, LogOut, Wifi, WifiOff, DollarSign } from 'lucide-react';
 
 interface ChatProps {
 	token: string;
@@ -130,10 +130,16 @@ export default function Chat({ token, onLogout }: ChatProps) {
 			setIsSending(false);
 		});
 
+		socket.on('clear-chat', () => {
+			setMessages([]);
+			setIsSending(false);
+		});
+
 		return () => {
 			socket.off('connect');
 			socket.off('disconnect');
 			socket.off('bot-message');
+			socket.off('clear-chat');
 		};
 	}, [token]);
 
@@ -233,8 +239,19 @@ export default function Chat({ token, onLogout }: ChatProps) {
 					{messages.length === 0 && isConnected && (
 						<div className="flex items-center justify-center flex-1">
 							<div className="text-center max-w-md animate-fade-in">
-								<div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-emerald-500/20 to-teal-600/20 rounded-3xl mb-6 border border-emerald-500/20">
-									<Sparkles className="w-10 h-10 text-emerald-400" strokeWidth={1.5} />
+								<div className="relative inline-flex items-center gap-3 mb-6">
+									{/* Bot circle */}
+									<div className="relative w-16 h-16 bg-gradient-to-br from-emerald-500/20 to-teal-600/20 rounded-2xl border border-emerald-500/30 flex items-center justify-center backdrop-blur-sm">
+										<Bot className="w-9 h-9 text-emerald-400" strokeWidth={1.8} />
+									</div>
+
+									{/* Connector line */}
+									<div className="w-8 h-0.5 bg-gradient-to-r from-emerald-500/40 to-teal-500/40" />
+
+									{/* Dollar circle */}
+									<div className="relative w-16 h-16 bg-gradient-to-br from-teal-500/20 to-emerald-600/20 rounded-2xl border border-teal-500/30 flex items-center justify-center backdrop-blur-sm">
+										<DollarSign className="w-9 h-9 text-teal-400" strokeWidth={2} />
+									</div>
 								</div>
 								<h2 className="text-xl font-semibold text-white mb-3">
 									Bem-vindo ao Bot Financeiro
@@ -244,7 +261,6 @@ export default function Chat({ token, onLogout }: ChatProps) {
 									mensagem abaixo.
 								</p>
 								<div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800/50 rounded-xl p-4">
-									<p className="text-xs text-gray-400 mb-2">💡 Dica</p>
 									<p className="text-sm text-gray-300">
 										Digite <span className="text-emerald-400 font-semibold">"ajuda"</span> ou{' '}
 										<span className="text-emerald-400 font-semibold">"?"</span> para ver todos os
