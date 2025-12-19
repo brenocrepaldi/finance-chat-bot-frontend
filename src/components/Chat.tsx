@@ -20,6 +20,7 @@ export default function Chat({ token, onLogout }: ChatProps) {
 	const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
 	const messagesEndRef = useRef<HTMLDivElement>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
+	const messagesContainerRef = useRef<HTMLDivElement>(null);
 
 	const scrollToBottom = () => {
 		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -41,7 +42,9 @@ export default function Chat({ token, onLogout }: ChatProps) {
 		if (window.visualViewport) {
 			window.visualViewport.addEventListener('resize', handleResize);
 			// Define altura inicial
-			setViewportHeight(window.visualViewport.height);
+			requestAnimationFrame(() => {
+				setViewportHeight(window.visualViewport!.height);
+			});
 		} else {
 			// Fallback para navegadores que não suportam visualViewport
 			const handleWindowResize = () => setViewportHeight(window.innerHeight);
@@ -67,7 +70,7 @@ export default function Chat({ token, onLogout }: ChatProps) {
 		// Executa a cada tentativa de scroll
 		window.addEventListener('scroll', preventPageScroll, { passive: true });
 		document.addEventListener('scroll', preventPageScroll, { passive: true });
-		
+
 		// Força posição inicial
 		preventPageScroll();
 
@@ -83,6 +86,26 @@ export default function Chat({ token, onLogout }: ChatProps) {
 			inputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 		}, 300);
 	};
+
+	// Fecha teclado quando scroll é feito no chat
+	useEffect(() => {
+		const messagesContainer = messagesContainerRef.current;
+		if (!messagesContainer) return;
+
+		const handleScroll = () => {
+			// Verifica se input está focado (teclado aberto)
+			if (document.activeElement === inputRef.current) {
+				// Remove foco do input para fechar o teclado
+				inputRef.current?.blur();
+			}
+		};
+
+		messagesContainer.addEventListener('scroll', handleScroll, { passive: true });
+
+		return () => {
+			messagesContainer.removeEventListener('scroll', handleScroll);
+		};
+	}, []);
 
 	useEffect(() => {
 		const socket = socketService.connect(token);
@@ -138,7 +161,7 @@ export default function Chat({ token, onLogout }: ChatProps) {
 	};
 
 	return (
-		<div 
+		<div
 			className="flex flex-col bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 overflow-hidden"
 			style={{ height: `${viewportHeight}px`, transition: 'height 0.3s ease-out' }}
 		>
@@ -201,7 +224,11 @@ export default function Chat({ token, onLogout }: ChatProps) {
 			</div>
 
 			{/* Messages Area - Scrollable content */}
-			<div className="flex-1 overflow-y-auto overscroll-none messages-container" style={{ touchAction: 'pan-y' }}>
+			<div
+				ref={messagesContainerRef}
+				className="flex-1 overflow-y-auto overscroll-none messages-container"
+				style={{ touchAction: 'pan-y' }}
+			>
 				<div className="p-4 max-w-4xl w-full mx-auto min-h-full flex flex-col">
 					{messages.length === 0 && isConnected && (
 						<div className="flex items-center justify-center flex-1">
@@ -209,10 +236,12 @@ export default function Chat({ token, onLogout }: ChatProps) {
 								<div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-emerald-500/20 to-teal-600/20 rounded-3xl mb-6 border border-emerald-500/20">
 									<Sparkles className="w-10 h-10 text-emerald-400" strokeWidth={1.5} />
 								</div>
-								<h2 className="text-xl font-semibold text-white mb-3">Bem-vindo ao Bot Financeiro</h2>
+								<h2 className="text-xl font-semibold text-white mb-3">
+									Bem-vindo ao Bot Financeiro
+								</h2>
 								<p className="text-gray-400 text-sm mb-6 leading-relaxed">
-									Gerencie suas finanças de forma simples e inteligente. Comece enviando uma mensagem
-									abaixo.
+									Gerencie suas finanças de forma simples e inteligente. Comece enviando uma
+									mensagem abaixo.
 								</p>
 								<div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800/50 rounded-xl p-4">
 									<p className="text-xs text-gray-400 mb-2">💡 Dica</p>
