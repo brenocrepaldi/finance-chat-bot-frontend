@@ -172,7 +172,7 @@ export default function Chat({ token, onLogout }: ChatProps) {
 			style={{ height: `${viewportHeight}px`, transition: 'height 0.3s ease-out' }}
 		>
 			{/* Header - Fixed at top */}
-			<div className="flex-shrink-0 bg-gray-950/80 backdrop-blur-xl border-b border-gray-800/50 shadow-xl z-10">
+			<div className="flex-shrink-0 bg-gray-950/80 backdrop-blur-xl border-b border-gray-800/50 shadow-xl z-10 pt-safe">
 				<div className="max-w-4xl mx-auto px-4 py-4">
 					<div className="flex items-center justify-between">
 						{/* Logo e Status */}
