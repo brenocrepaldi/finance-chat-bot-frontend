@@ -14,6 +14,7 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	background: #0a0a0a;
+	font-size: 16px;
 }
 
 /* Scrollbar personalizada */
@@ -64,12 +65,18 @@ body {
 	animation: fadeIn 0.2s ease-out;
 }
 
-/* IOS Config */
+/* iOS Config - Prevent zoom on input focus */
 
 @supports (-webkit-touch-callout: none) {
 	input,
 	textarea,
 	select {
-		font-size: 14px;
+		font-size: 16px !important;
 	}
+}
+
+/* Overflow wrap utility */
+.overflow-wrap-anywhere {
+	overflow-wrap: anywhere;
+	word-break: break-word;
 }
