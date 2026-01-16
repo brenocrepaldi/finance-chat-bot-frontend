@@ -122,6 +122,44 @@ export default function Chat({ token, onLogout }: ChatProps) {
 		};
 	}, []);
 
+	// Auto-foca no input quando o usuário começa a digitar
+	useEffect(() => {
+		const handleKeyDown = (e: KeyboardEvent) => {
+			// Não faz nada se não estiver conectado ou estiver enviando
+			if (isSending) return;
+
+			// Não faz nada se já estiver focado no input
+			if (document.activeElement === inputRef.current) return;
+
+			// Ignora teclas especiais
+			if (
+				e.ctrlKey ||
+				e.metaKey ||
+				e.altKey ||
+				e.key === 'Escape' ||
+				e.key === 'Tab' ||
+				e.key === 'Enter' ||
+				e.key.startsWith('F') || // F1-F12
+				e.key.startsWith('Arrow') || // Arrow keys
+				e.key === 'Shift' ||
+				e.key === 'Control' ||
+				e.key === 'Alt' ||
+				e.key === 'Meta'
+			) {
+				return;
+			}
+
+			// Foca no input para permitir digitação
+			inputRef.current?.focus();
+		};
+
+		document.addEventListener('keydown', handleKeyDown);
+
+		return () => {
+			document.removeEventListener('keydown', handleKeyDown);
+		};
+	}, [isConnected, isSending]);
+
 	useEffect(() => {
 		const socket = socketService.connect(token);
 
@@ -168,9 +206,7 @@ export default function Chat({ token, onLogout }: ChatProps) {
 				pendingMessages.forEach((msg) => {
 					socket.emit('user-message', { text: msg.text });
 					// Remove o status pending da mensagem
-					setMessages((prev) =>
-						prev.map((m) => (m.id === msg.id ? { ...m, pending: false } : m))
-					);
+					setMessages((prev) => prev.map((m) => (m.id === msg.id ? { ...m, pending: false } : m)));
 				});
 				// Limpa a fila de pendentes
 				// eslint-disable-next-line react-hooks/set-state-in-effect
@@ -251,15 +287,17 @@ export default function Chat({ token, onLogout }: ChatProps) {
 
 						{/* Ações */}
 						<div className="flex items-center gap-2">
-							<button							onClick={handleRefresh}
-							disabled={isRefreshing}
-							className="flex items-center gap-1.5 px-3 py-2 text-gray-400 hover:text-emerald-400 hover:bg-emerald-500/10 rounded-lg transition-all text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-							title="Recarregar mensagens"
-						>
-							<RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-							<span className="hidden sm:inline">Recarregar</span>
-						</button>
-						<button								onClick={() => setShowClearModal(true)}
+							<button
+								onClick={handleRefresh}
+								disabled={isRefreshing}
+								className="flex items-center gap-1.5 px-3 py-2 text-gray-400 hover:text-emerald-400 hover:bg-emerald-500/10 rounded-lg transition-all text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+								title="Recarregar mensagens"
+							>
+								<RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+								<span className="hidden sm:inline">Recarregar</span>
+							</button>
+							<button
+								onClick={() => setShowClearModal(true)}
 								className="flex items-center gap-1.5 px-3 py-2 text-gray-400 hover:text-white hover:bg-gray-800/50 rounded-lg transition-all text-sm"
 								title="Limpar mensagens"
 							>
