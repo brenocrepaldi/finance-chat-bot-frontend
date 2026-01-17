@@ -1,240 +1,484 @@
-# 💬 Finance Chat Bot - Frontend
+<div align="center">
+  <img src="public/bot.jpeg" alt="Finance Chat Bot Logo" width="150" height="150" style="border-radius: 50%;">
+  
+  # 💬 Finance Chat Bot - Frontend
+  
+  ### *Your AI-Powered Personal Finance Assistant*
+  
+  > Manage your finances naturally through conversation. Track expenses, monitor income, and control budgets with an intelligent chatbot that syncs seamlessly with Google Sheets.
+  
+  [![Live Demo](https://img.shields.io/badge/demo-live-success?style=flat-square)](https://finance-chat-bot-frontend.vercel.app)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+  [![React](https://img.shields.io/badge/React-19-61dafb?style=flat-square&logo=react)](https://react.dev/)
+  [![Vite](https://img.shields.io/badge/Vite-7.2-646cff?style=flat-square&logo=vite)](https://vitejs.dev/)
+  [![Socket.IO](https://img.shields.io/badge/Socket.IO-4.6-010101?style=flat-square&logo=socket.io)](https://socket.io/)
+  
+  ---
+  
+  > **⚠️ IMPORTANT NOTICE**  
+  > This application is currently in **private beta** and is not yet available for public use. Access is restricted to authorized users only. If you're interested in using this application, please contact me in the connect section.
+  
+  ---
+  
+  ### 📸 Application Preview
+  
+  <table>
+    <tr>
+      <td align="center">
+        <img src="public/chat.png" alt="Desktop Chat Interface" width="500">
+        <br>
+        <em>Desktop Experience - Clean & Intuitive Chat Interface</em>
+      </td>
+      <td align="center">
+        <img src="public/chat-mobile.png" alt="Mobile Chat Interface" width="250">
+        <br>
+        <em>Mobile Experience - On-the-Go Finance Management</em>
+      </td>
+    </tr>
+  </table>
+  
+</div>
 
-> A modern, real-time chat interface for managing personal finances through conversational AI, powered by Google Sheets integration.
+## 🎯 About the Project
 
-[![Live Demo](https://img.shields.io/badge/demo-live-success?style=flat-square)](https://finance-chat-bot-frontend.vercel.app)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
-[![React](https://img.shields.io/badge/React-19-61dafb?style=flat-square&logo=react)](https://react.dev/)
-[![Vite](https://img.shields.io/badge/Vite-7.2-646cff?style=flat-square&logo=vite)](https://vitejs.dev/)
+Finance Chat Bot Frontend is a cutting-edge web application that revolutionizes personal finance management through natural conversation. Built with modern web technologies, it offers an intuitive chat interface where users can effortlessly track expenses, log income, and manage budgets using plain language.
+
+### The Story Behind This Project
+
+This project was born from a personal need to keep a closer eye on my finances. I found myself struggling to maintain consistent tracking of expenses and income using traditional methods like spreadsheets or complex financial apps. I realized I needed something simpler, more intuitive, and conversational—a solution that would make financial management feel natural rather than like a chore. That's when I decided to build Finance Chat Bot: a way to manage finances through simple conversations, making it easier for anyone (including myself) to stay on top of their financial health.
+
+### Why Finance Chat Bot?
+
+- **💡 Natural Language Processing** - No complex forms or spreadsheet knowledge required
+- **🔄 Real-Time Sync** - Instant data updates across all your devices
+- **📊 Google Sheets Integration** - Your data, accessible anywhere you need it
+- **🎯 Smart & Intuitive** - AI understands context and learns from your patterns
+- **🔒 Secure & Private** - Your financial data stays protected
+
+## ✨ Key Features
+
+### 💬 Conversational Interface
+
+- **Natural Language Processing** - Chat naturally about your finances
+- **Real-Time Responses** - Instant feedback powered by WebSocket technology
+- **Context-Aware** - Bot remembers your conversation history
+
+### 📱 Cross-Platform Experience
+
+- **Responsive Design** - Seamlessly adapts from mobile to desktop
+- **Mobile-First Approach** - Optimized touch interactions and gestures
+- **Pull-to-Refresh** - Intuitive mobile refresh functionality
+- **Progressive Web App Ready** - Install on your home screen
+
+### 🚀 Performance & Reliability
+
+- **Lightning Fast** - Built with Vite for sub-second load times
+- **Auto-Reconnection** - Intelligent WebSocket connection management
+- **Offline-First** - Message persistence even when disconnected
+- **Error Recovery** - Graceful handling of network issues
+
+### 🎨 Modern User Experience
+
+- **Clean UI** - Minimalist design focused on usability
+- **Dark Mode Compatible** - Easy on the eyes (coming soon)
+- **Accessible** - WCAG compliant interface
+- **Smooth Animations** - Polished interactions and transitions
+
+### 🔌 Integration & Data
+
+- **Google Sheets Sync** - Direct integration with your financial spreadsheet
+- **Real-Time Updates** - Changes reflect instantly across all platforms
+- **Data Export** - Easy access to your financial history
+- **Secure Communication** - Encrypted data transmission
 
 ---
 
-## 📋 Table of Contents
+## 🛠️ Technology Stack
 
-- [Overview](#-overview)
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [Getting Started](#-getting-started)
-- [Configuration](#-configuration)
-- [Mobile Access](#-mobile-access)
-- [Project Structure](#-project-structure)
-- [Architecture](#-architecture)
-- [Development](#-development)
-- [Deployment](#-deployment)
-- [Contributing](#-contributing)
-- [License](#-license)
+### Core Technologies
 
----
+| Technology                                    | Purpose      | Version | Why We Use It                                      |
+| --------------------------------------------- | ------------ | ------- | -------------------------------------------------- |
+| [React](https://react.dev/)                   | UI Framework | 19.2.0  | Component-based architecture for maintainable code |
+| [TypeScript](https://www.typescriptlang.org/) | Type Safety  | 5.9.3   | Catch errors early, improve developer experience   |
+| [Vite](https://vitejs.dev/)                   | Build Tool   | 7.2.4   | Lightning-fast HMR and optimized builds            |
+| [Tailwind CSS](https://tailwindcss.com/)      | Styling      | 3.4.1   | Utility-first CSS for rapid UI development         |
 
-## 🎯 Overview
+### Libraries & Tools
 
-Finance Chat Bot Frontend is a responsive web application that provides an intuitive chat interface for managing personal finances. Users can interact with an AI-powered bot to track expenses, income, and budgets through natural language conversations. All data is seamlessly synchronized with Google Sheets for easy access and analysis.
+| Technology                             | Purpose                 | Version |
+| -------------------------------------- | ----------------------- | ------- |
+| [Socket.IO Client](https://socket.io/) | Real-time Communication | 4.6.1   |
+| [Lucide React](https://lucide.dev/)    | Icon Library            | 0.562.0 |
+| [Zod](https://zod.dev/)                | Runtime Validation      | 4.2.1   |
 
-### ✨ Features
+### Development Tools
 
-- 💬 **Real-time Chat Interface** - Instant messaging with WebSocket support
-- 📱 **Mobile-First Design** - Optimized for all screen sizes
-- 🔄 **Pull-to-Refresh** - Mobile gesture support for refreshing conversations
-- 🎨 **Modern UI/UX** - Clean, intuitive design with Tailwind CSS
-- ⚡ **Lightning Fast** - Built with Vite for optimal performance
-- 🔌 **Auto-Reconnection** - Robust WebSocket handling with automatic reconnection
-- 🎯 **TypeScript** - Fully typed for enhanced developer experience
-- 📊 **Google Sheets Integration** - Direct synchronization with your financial data
+- **ESLint** - Code quality and consistency
+- **PostCSS** - CSS processing and optimization
+- **TypeScript ESLint** - TypeScript-specific linting rules
 
 ---
 
-## 🛠️ Tech Stack
-
-| Technology | Purpose | Version |
-|------------|---------|---------|
-| [React](https://react.dev/) | UI Framework | 19.2.0 |
-| [TypeScript](https://www.typescriptlang.org/) | Type Safety | 5.9.3 |
-| [Vite](https://vitejs.dev/) | Build Tool | 7.2.4 |
-| [Tailwind CSS](https://tailwindcss.com/) | Styling | 3.4.1 |
-| [Socket.IO Client](https://socket.io/) | Real-time Communication | 4.6.1 |
-| [Lucide React](https://lucide.dev/) | Icons | 0.562.0 |
-| [Zod](https://zod.dev/) | Schema Validation | 4.2.1 |
-
----
-
-## 🚀 Getting Started
+## 🚀 Quick Start
 
 ### Prerequisites
 
-- **Node.js** >= 18.x
-- **npm** >= 9.x (or yarn/pnpm)
-- Backend API running (see backend repository)
+Before you begin, ensure you have the following installed:
 
-### Installation
+- **Node.js** >= 18.x ([Download](https://nodejs.org/))
+- **npm** >= 9.x (comes with Node.js)
+- **Backend API** - Make sure the backend server is running
 
-1. **Clone the repository**
+### Installation Steps
+
+1. **Clone the Repository**
+
    ```bash
    git clone https://github.com/brenocrepaldi/finance-chat-bot-frontend.git
    cd finance-chat-bot-frontend
    ```
 
-2. **Install dependencies**
+2. **Install Dependencies**
+
    ```bash
    npm install
    ```
 
-3. **Set up environment variables**
+   This will install all required packages defined in `package.json`.
+
+3. **Configure Environment**
+
+   Create a `.env` file in the root directory:
+
    ```bash
    cp .env.example .env
    ```
-   
-   Edit `.env` with your configuration:
+
+   Update `.env` with your backend URL:
+
    ```env
    VITE_SOCKET_URL=http://localhost:3000
    ```
 
-4. **Start the development server**
+4. **Start Development Server**
+
    ```bash
    npm run dev
    ```
 
-5. **Open your browser**
-   
-   Navigate to [http://localhost:5173](http://localhost:5173)
+   The application will start at [http://localhost:5173](http://localhost:5173)
+
+5. **Verify Connection**
+   - Open your browser to `http://localhost:5173`
+   - Ensure the backend server is running
+   - Start chatting with your finance bot!
+
+### Troubleshooting
+
+**Connection Issues?**
+
+- Verify the backend server is running
+- Check `VITE_SOCKET_URL` in your `.env` file
+- Ensure no firewall is blocking port 3000
+
+**Build Errors?**
+
+- Clear node_modules: `rm -rf node_modules && npm install`
+- Check Node.js version: `node --version`
+- Update npm: `npm install -g npm@latest`
 
 ---
 
-## ⚙️ Configuration
+## ⚙️ Environment Configuration
 
 ### Environment Variables
 
-| Variable | Description | Default | Required |
-|----------|-------------|---------|----------|
-| `VITE_SOCKET_URL` | Backend WebSocket server URL | `http://localhost:3000` | ✅ Yes |
+Configure your application by setting the following environment variables in your `.env` file:
 
-### Example Configurations
+| Variable          | Description                  | Default                 | Required | Example                   |
+| ----------------- | ---------------------------- | ----------------------- | -------- | ------------------------- |
+| `VITE_SOCKET_URL` | Backend WebSocket server URL | `http://localhost:3000` | ✅ Yes   | `https://api.example.com` |
+
+### Configuration Examples
 
 **Local Development:**
+
 ```env
+# Development environment
 VITE_SOCKET_URL=http://localhost:3000
 ```
 
-**Production:**
+**Staging Environment:**
+
 ```env
-VITE_SOCKET_URL=https://api.yourbackend.com
+# Staging environment
+VITE_SOCKET_URL=https://staging-api.example.com
 ```
 
----
+**Production:**
 
-## 📱 Mobile Access
+```env
+# Production environment
+VITE_SOCKET_URL=https://api.example.com
+```
 
-### Access from Mobile Devices (Same Network)
+### Security Best Practices
 
-1. **Find your computer's local IP address**
-
-   **macOS/Linux:**
-   ```bash
-   ipconfig getifaddr en0  # macOS
-   # or
-   ifconfig | grep "inet "  # Linux
-   ```
-
-   **Windows:**
-   ```bash
-   ipconfig
-   # Look for IPv4 Address under your active network adapter
-   ```
-
-2. **Update your `.env` file**
-   ```env
-   VITE_SOCKET_URL=http://192.168.1.XXX:3000
-   ```
-   Replace `192.168.1.XXX` with your computer's IP address.
-
-3. **Restart the development server**
-   ```bash
-   npm run dev
-   ```
-
-4. **Access from your mobile device**
-   
-   Open your mobile browser and navigate to:
-   ```
-   http://192.168.1.XXX:5173
-   ```
-
-> **Note:** Ensure both devices are connected to the same WiFi network and your firewall allows local network connections.
+- ✅ Never commit `.env` files to version control
+- ✅ Use different configurations for each environment
+- ✅ Store production secrets in your deployment platform's environment variables
+- ✅ Use HTTPS URLs in production environments
 
 ---
 
-## 📂 Project Structure
+## 📱 Mobile Access Guide
+
+### Testing on Mobile Devices (Same Network)
+
+To test your application on mobile devices while developing locally:
+
+#### Step 1: Find Your Computer's IP Address
+
+**macOS:**
+
+```bash
+ipconfig getifaddr en0
+# Output example: 192.168.1.100
+```
+
+**Linux:**
+
+```bash
+hostname -I | awk '{print $1}'
+# or
+ifconfig | grep "inet " | grep -v 127.0.0.1
+```
+
+**Windows:**
+
+```bash
+ipconfig
+# Look for IPv4 Address under your active network adapter
+```
+
+#### Step 2: Update Backend Configuration
+
+Update your `.env` file with your computer's IP:
+
+```env
+VITE_SOCKET_URL=http://192.168.1.100:3000
+```
+
+_Replace `192.168.1.100` with your actual IP address_
+
+#### Step 3: Restart Development Server
+
+```bash
+# Stop the current server (Ctrl+C)
+npm run dev
+```
+
+#### Step 4: Access from Mobile
+
+Open your mobile browser and navigate to:
+
+```
+http://192.168.1.100:5173
+```
+
+### Requirements & Troubleshooting
+
+✅ **Requirements:**
+
+- Both devices connected to the same WiFi network
+- Firewall allows local network connections
+- Backend server also accessible via local IP
+
+⚠️ **Common Issues:**
+
+| Issue                        | Solution                                                            |
+| ---------------------------- | ------------------------------------------------------------------- |
+| Cannot access from mobile    | Check firewall settings and ensure both devices are on same network |
+| Connection refused           | Verify backend server is running and accessible                     |
+| Page loads but no connection | Double-check `VITE_SOCKET_URL` points to backend IP                 |
+
+### Installing as PWA (Progressive Web App)
+
+1. Open the app in your mobile browser
+2. Tap the browser menu (⋮ or ⋯)
+3. Select "Add to Home Screen" or "Install App"
+4. Access the app like a native application!
+
+---
+
+## 📂 Project Architecture
+
+### Directory Structure
 
 ```
 finance-chat-bot-frontend/
-├── src/
-│   ├── components/           # React components
-│   │   ├── Chat.tsx         # Main chat container component
-│   │   └── MessageBubble.tsx # Individual message bubble
-│   ├── services/            # External service integrations
-│   │   └── socket.ts        # Socket.IO client service
-│   ├── types/               # TypeScript type definitions
-│   │   └── index.ts         # Shared types and interfaces
-│   ├── App.tsx              # Root application component
-│   ├── App.css              # Application-specific styles
-│   ├── main.tsx             # Application entry point
-│   └── index.css            # Global styles + Tailwind directives
-├── public/                  # Static assets
-├── .env.example             # Environment variables template
-├── index.html               # HTML entry point
-├── package.json             # Project dependencies
-├── tailwind.config.js       # Tailwind CSS configuration
-├── tsconfig.json            # TypeScript configuration
-└── vite.config.ts           # Vite configuration
+├── 📁 src/                      # Source code
+│   ├── 📁 components/           # React components
+│   │   ├── Chat.tsx            # Main chat container & logic
+│   │   ├── Login.tsx           # Authentication component
+│   │   ├── MessageBubble.tsx   # Message display component
+│   │   └── Modal.tsx           # Reusable modal component
+│   ├── 📁 services/            # External service integrations
+│   │   └── socket.ts           # Socket.IO client singleton
+│   ├── 📁 types/               # TypeScript definitions
+│   │   └── index.ts            # Shared types & interfaces
+│   ├── 📁 utils/               # Utility functions
+│   │   ├── api.ts              # API helper functions
+│   │   └── messageStorage.ts  # Local storage management
+│   ├── 📁 assets/              # Static assets (images, fonts)
+│   ├── App.tsx                 # Root component
+│   ├── App.css                 # App-level styles
+│   ├── main.tsx                # Application entry point
+│   └── index.css               # Global styles + Tailwind
+├── 📁 public/                   # Static files served as-is
+│   ├── manifest.json           # PWA manifest
+│   ├── bot.jpeg                # Bot logo
+│   ├── chat.png                # Desktop screenshot
+│   └── chat-mobile.png         # Mobile screenshot
+├── 📄 .env.example              # Environment template
+├── 📄 index.html                # HTML entry point
+├── 📄 package.json              # Dependencies & scripts
+├── 📄 tailwind.config.js        # Tailwind configuration
+├── 📄 tsconfig.json             # TypeScript config (base)
+├── 📄 tsconfig.app.json         # TypeScript config (app)
+├── 📄 tsconfig.node.json        # TypeScript config (node)
+└── 📄 vite.config.ts            # Vite build configuration
 ```
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ Component Architecture
 
-### Component Overview
+### Core Components
 
-#### `Chat.tsx`
-The main chat component that orchestrates the entire conversation interface.
+#### `Chat.tsx` - Main Chat Interface
+
+**Purpose:** Orchestrates the entire chat experience
 
 **Responsibilities:**
-- Managing message state
-- Handling Socket.IO connection lifecycle
-- Processing user input
-- Auto-scrolling to latest messages
-- Error handling and connection status
+
+- ✅ Managing conversation state
+- ✅ Handling WebSocket lifecycle (connect/disconnect/reconnect)
+- ✅ Processing user input and bot responses
+- ✅ Auto-scrolling to latest messages
+- ✅ Error handling and connection status display
 
 **Key Features:**
-- Real-time message updates
-- Message history persistence
-- Typing indicators (future enhancement)
 
-#### `MessageBubble.tsx`
-A reusable message display component with responsive design.
+- Real-time message updates via Socket.IO
+- Persistent message history (localStorage)
+- Auto-reconnection on network issues
+- Typing indicators (future enhancement)
+- Message timestamps
+
+#### `MessageBubble.tsx` - Message Display
+
+**Purpose:** Reusable component for rendering individual messages
 
 **Props:**
-- `message`: Message text content
-- `timestamp`: Message creation time
-- `isUser`: Boolean to differentiate user/bot messages
+
+```typescript
+interface MessageBubbleProps {
+	message: string; // Message content
+	timestamp: Date; // When message was sent
+	isUser: boolean; // User vs Bot differentiation
+}
+```
 
 **Features:**
-- Dynamic styling based on sender
-- Timestamp formatting
-- Mobile-optimized layout
 
-#### `socket.ts`
-A singleton service managing WebSocket connections.
+- Dynamic styling based on sender (user/bot)
+- Responsive layout for mobile/desktop
+- Formatted timestamps (relative time)
+- Markdown support (future enhancement)
+
+#### `Login.tsx` - User Authentication
+
+**Purpose:** Handles user authentication flow
 
 **Features:**
-- Automatic reconnection on disconnect
-- Event listener management
-- Connection status monitoring
-- Singleton pattern for single connection instance
 
-**Events:**
-- `connect` - Successful connection
-- `disconnect` - Connection lost
+- Simple authentication interface
+- Session management
+- Error handling for auth failures
+
+#### `Modal.tsx` - Reusable Modal
+
+**Purpose:** Generic modal component for dialogs
+
+**Features:**
+
+- Accessible keyboard navigation
+- Click-outside-to-close
+- Customizable content
+- Animation transitions
+
+### Services Layer
+
+#### `socket.ts` - WebSocket Manager
+
+**Purpose:** Singleton service for managing WebSocket connections
+
+**Architecture Pattern:** Singleton
+
+**Features:**
+
+- ✅ Single connection instance across the app
+- ✅ Automatic reconnection with exponential backoff
+- ✅ Event listener management
+- ✅ Connection status monitoring
+- ✅ Error handling and recovery
+
+**Events Handled:**
+
+- `connect` - Successful connection established
+- `disconnect` - Connection lost or closed
 - `message` - Incoming message from bot
 - `error` - Connection or message errors
+- `reconnect` - Reconnection attempt successful
+
+**Usage Example:**
+
+```typescript
+import socket from '@/services/socket';
+
+// Listen for messages
+socket.on('message', (data) => {
+	console.log('Received:', data);
+});
+
+// Send message
+socket.emit('message', { text: 'Hello!' });
+```
+
+### Utilities
+
+#### `api.ts` - API Helpers
+
+**Purpose:** HTTP request utilities and API endpoint management
+
+**Functions:**
+
+- Request/response interceptors
+- Error handling standardization
+- Authentication token management
+
+#### `messageStorage.ts` - Local Storage
+
+**Purpose:** Persist and retrieve chat history
+
+**Functions:**
+
+- Save messages to localStorage
+- Retrieve conversation history
+- Clear chat history
+- Handle storage quotas
 
 ---
 
@@ -242,128 +486,397 @@ A singleton service managing WebSocket connections.
 
 ### Color Palette
 
-| Element | Color | Tailwind Class |
-|---------|-------|----------------|
-| User Messages | Blue | `bg-blue-500` |
-| Bot Messages | Gray | `bg-gray-200` |
-| Background | Light Gray | `bg-gray-100` |
-| Text (User) | White | `text-white` |
-| Text (Bot) | Dark Gray | `text-gray-800` |
+| Element       | Color      | Hex       | Tailwind Class    |
+| ------------- | ---------- | --------- | ----------------- |
+| User Messages | Blue       | `#3B82F6` | `bg-blue-500`     |
+| Bot Messages  | Light Gray | `#E5E7EB` | `bg-gray-200`     |
+| Background    | Pale Gray  | `#F9FAFB` | `bg-gray-50`      |
+| User Text     | White      | `#FFFFFF` | `text-white`      |
+| Bot Text      | Dark Gray  | `#1F2937` | `text-gray-800`   |
+| Accent        | Indigo     | `#6366F1` | `text-indigo-600` |
+
+### Typography
+
+- **Font Family:** System UI fonts for optimal performance
+- **Headings:** Bold, larger sizes (text-xl, text-2xl)
+- **Body:** Regular weight, 16px base size
+- **Timestamps:** Smaller, lighter weight (text-xs, text-gray-500)
 
 ### Responsive Breakpoints
 
-Following Tailwind CSS default breakpoints:
+Following Tailwind CSS defaults:
 
-- **sm:** 640px - Small tablets
-- **md:** 768px - Tablets
-- **lg:** 1024px - Desktops
-- **xl:** 1280px - Large desktops
+| Breakpoint | Min Width | Target Devices              |
+| ---------- | --------- | --------------------------- |
+| `sm`       | 640px     | Large phones, small tablets |
+| `md`       | 768px     | Tablets                     |
+| `lg`       | 1024px    | Laptops, small desktops     |
+| `xl`       | 1280px    | Large desktops              |
+| `2xl`      | 1536px    | Extra large screens         |
+
+### Spacing System
+
+- **Base unit:** 0.25rem (4px)
+- **Common spacing:** `space-y-4`, `p-6`, `m-4`
+- **Container padding:** `px-4 md:px-6 lg:px-8`
 
 ---
 
-## 💻 Development
+## 💻 Development Guide
 
 ### Available Scripts
 
-```bash
-# Start development server with hot reload
-npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build locally
-npm run preview
-
-# Run ESLint for code quality
-npm run lint
-
-# Type-check without emitting files
-npm run type-check
-```
+| Script          | Command              | Description                                          |
+| --------------- | -------------------- | ---------------------------------------------------- |
+| **Development** | `npm run dev`        | Start dev server with hot reload at `localhost:5173` |
+| **Build**       | `npm run build`      | Create optimized production build in `dist/`         |
+| **Preview**     | `npm run preview`    | Preview production build locally                     |
+| **Lint**        | `npm run lint`       | Run ESLint for code quality checks                   |
+| **Type Check**  | `npm run type-check` | Run TypeScript compiler without emitting files       |
 
 ### Development Workflow
 
-1. Create a feature branch from `main`
-2. Make your changes with clear, atomic commits
-3. Run linting: `npm run lint`
-4. Test thoroughly on multiple screen sizes
-5. Build and preview: `npm run build && npm run preview`
-6. Submit a pull request
+Follow these best practices for contributing:
 
-### Code Style
+1. **Create a Feature Branch**
 
-This project uses:
-- **ESLint** for code quality
-- **TypeScript** for type safety
-- **Prettier** (recommended) for formatting
+   ```bash
+   git checkout -b feature/your-feature-name
+   # or
+   git checkout -b fix/bug-description
+   ```
+
+2. **Make Atomic Commits**
+
+   ```bash
+   git commit -m "feat: add message persistence"
+   git commit -m "fix: resolve reconnection bug"
+   ```
+
+   Follow [Conventional Commits](https://www.conventionalcommits.org/):
+   - `feat:` - New features
+   - `fix:` - Bug fixes
+   - `docs:` - Documentation changes
+   - `style:` - Code style changes (formatting, etc.)
+   - `refactor:` - Code refactoring
+   - `test:` - Adding tests
+   - `chore:` - Maintenance tasks
+
+3. **Run Quality Checks**
+
+   ```bash
+   npm run lint          # Check code quality
+   npm run type-check    # Verify TypeScript types
+   npm run build         # Ensure build succeeds
+   ```
+
+4. **Test Thoroughly**
+   - Test on multiple screen sizes (mobile, tablet, desktop)
+   - Verify WebSocket connection/disconnection
+   - Test error scenarios (backend down, network issues)
+   - Check browser console for errors
+
+5. **Preview Production Build**
+
+   ```bash
+   npm run build
+   npm run preview
+   ```
+
+6. **Submit Pull Request**
+   - Write a clear PR description
+   - Reference any related issues
+   - Add screenshots for UI changes
+   - Request review from maintainers
+
+### Code Style Guidelines
+
+**TypeScript:**
+
+- ✅ Use explicit types (avoid `any`)
+- ✅ Prefer interfaces over types for object shapes
+- ✅ Use optional chaining (`?.`) and nullish coalescing (`??`)
+- ✅ Extract complex types into `src/types/`
+
+**React:**
+
+- ✅ Functional components with hooks
+- ✅ Use `const` for components
+- ✅ Extract reusable logic into custom hooks
+- ✅ Keep components focused (single responsibility)
+
+**CSS/Tailwind:**
+
+- ✅ Use Tailwind utility classes primarily
+- ✅ Extract repeated patterns into components
+- ✅ Use responsive modifiers (`md:`, `lg:`)
+- ✅ Maintain consistent spacing scale
+
+**File Organization:**
+
+- ✅ One component per file
+- ✅ Co-locate related files
+- ✅ Use clear, descriptive names
+- ✅ Keep files under 300 lines when possible
+
+### Recommended VS Code Extensions
+
+- **ESLint** - Code quality
+- **Prettier** - Code formatting
+- **Tailwind CSS IntelliSense** - Tailwind autocomplete
+- **TypeScript Error Translator** - Better TS error messages
+- **Error Lens** - Inline error highlighting
+
+### Debugging Tips
+
+**WebSocket Issues:**
+
+```typescript
+// Add debug logging in socket.ts
+socket.on('connect', () => {
+	console.log('🟢 Connected:', socket.id);
+});
+
+socket.on('disconnect', (reason) => {
+	console.log('🔴 Disconnected:', reason);
+});
+```
+
+**State Debugging:**
+
+```typescript
+// Use React DevTools browser extension
+// Add console.log strategically
+useEffect(() => {
+	console.log('Messages updated:', messages);
+}, [messages]);
+```
+
+**Network Debugging:**
+
+- Open browser DevTools (F12)
+- Go to Network tab → WS (WebSocket)
+- Monitor connection status and messages
 
 ---
 
-## 🚀 Deployment
+## 🚀 Building & Deployment
 
 ### Build for Production
+
+Create an optimized production build:
 
 ```bash
 npm run build
 ```
 
-This creates an optimized production build in the `dist/` directory.
+**Build Output:**
+
+- Production files are generated in `dist/` directory
+- Assets are minified and optimized
+- TypeScript is compiled to JavaScript
+- CSS is purged of unused styles
+
+**Build Performance:**
+
+- ⚡ Vite's lightning-fast build times
+- 🗜️ Automatic code splitting
+- 🎯 Tree-shaking for minimal bundle size
+- 📦 Asset optimization and compression
 
 ### Deployment Platforms
 
-This project is ready to deploy on:
+This application is ready to deploy on various platforms:
 
-- **Vercel** (Recommended) - [Live Demo](https://finance-chat-bot-frontend.vercel.app)
-- **Netlify**
-- **GitHub Pages**
-- **AWS S3 + CloudFront**
+#### 🔷 Vercel (Recommended)
 
-### Vercel Deployment
+**Why Vercel?**
 
-1. Install Vercel CLI: `npm i -g vercel`
-2. Run: `vercel`
-3. Follow the prompts
-4. Set environment variables in Vercel dashboard
+- Zero-config deployment
+- Automatic HTTPS
+- Global CDN
+- Instant rollbacks
+- Free tier available
 
----
+**Deploy with Vercel CLI:**
 
-## 🤝 Contributing
+```bash
+# Install Vercel CLI
+npm i -g vercel
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+# Deploy
+vercel
 
-### Steps to Contribute
+# Deploy to production
+vercel --prod
+```
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+**Deploy via GitHub:**
 
----
+1. Push your code to GitHub
+2. Visit [vercel.com](https://vercel.com)
+3. Import your repository
+4. Configure environment variables
+5. Deploy! 🚀
+
+**Live Demo:** [https://finance-chat-bot-frontend.vercel.app](https://finance-chat-bot-frontend.vercel.app)
+
+#### 🔶 Netlify
+
+**Deploy with Netlify:**
+
+```bash
+# Install Netlify CLI
+npm i -g netlify-cli
+
+# Deploy
+netlify deploy
+
+# Deploy to production
+netlify deploy --prod
+```
+
+**Build Settings:**
+
+- Build command: `npm run build`
+- Publish directory: `dist`
+
+#### 📘 GitHub Pages
+
+**Deploy to GitHub Pages:**
+
+```bash
+# Add to vite.config.ts
+export default defineConfig({
+  base: '/finance-chat-bot-frontend/',
+  // ... rest of config
+})
+
+# Build
+npm run build
+
+# Deploy using gh-pages package
+npm install -D gh-pages
+npx gh-pages -d dist
+```
+
+#### ☁️ AWS S3 + CloudFront
+
+**Deploy to AWS:**
+
+```bash
+# Build
+npm run build
+
+# Upload to S3
+aws s3 sync dist/ s3://your-bucket-name --delete
+
+# Invalidate CloudFront cache
+aws cloudfront create-invalidation --distribution-id YOUR_ID --paths "/*"
+```
+
+### Environment Variables in Production
+
+**Vercel:**
+
+- Go to Project Settings → Environment Variables
+- Add `VITE_SOCKET_URL` with your production backend URL
+- Redeploy for changes to take effect
+
+**Netlify:**
+
+- Go to Site Settings → Build & Deploy → Environment
+- Add `VITE_SOCKET_URL` variable
+- Trigger a new deploy
+
+**Important:** Always use HTTPS URLs in production!
+
+### Post-Deployment Checklist
+
+- ✅ Verify environment variables are set correctly
+- ✅ Test WebSocket connection to backend
+- ✅ Check browser console for errors
+- ✅ Test on mobile devices
+- ✅ Verify Google Sheets integration works
+- ✅ Test error scenarios (network issues, etc.)
+- ✅ Monitor application performance
+
+### Performance Optimization
+
+**Already Implemented:**
+
+- Code splitting
+- Tree shaking
+- Minification
+- Asset compression
+
+**Future Improvements:**
+
+- Service Worker for offline support
+- Image lazy loading
+- Route-based code splitting
+- Caching strategies
 
 ## 📄 License
 
-This project is open source and available under the [MIT License](LICENSE).
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 🔗 Links
+## 🔗 Connect 
 
-- **Live Demo:** [https://finance-chat-bot-frontend.vercel.app](https://finance-chat-bot-frontend.vercel.app)
-- **Backend Repository:** [Link to backend repo]
-- **Issues:** [GitHub Issues](https://github.com/brenocrepaldi/finance-chat-bot-frontend/issues)
+### Project Links
 
----
+| Resource                   | Link                                                                                 |
+| -------------------------- | ------------------------------------------------------------------------------------ |
+| 🌐 **Live Demo**           | [finance-chat-bot-frontend.vercel.app](https://finance-chat-bot-frontend.vercel.app) |
+| 📦 **Frontend Repository** | [GitHub - Frontend](https://github.com/brenocrepaldi/finance-chat-bot-frontend)      |
+| 🔧 **Backend Repository**  | [GitHub - Backend](#)                                                                |
 
-## 📧 Contact
+### Connect with the Author
 
-**Breno Crepaldi** - [@brenocrepaldi](https://github.com/brenocrepaldi)
+**Breno Crepaldi**
 
-Project Link: [https://github.com/brenocrepaldi/finance-chat-bot-frontend](https://github.com/brenocrepaldi/finance-chat-bot-frontend)
+[![GitHub](https://img.shields.io/badge/GitHub-brenocrepaldi-181717?style=flat-square&logo=github)](https://github.com/brenocrepaldi)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=flat-square&logo=linkedin)](https://linkedin.com/in/brenocrepaldi)
+[![Email](https://img.shields.io/badge/Email-Contact-EA4335?style=flat-square&logo=gmail)](mailto:brenogaia2004@example.com)
+[![Portfolio](https://img.shields.io/badge/Portfolio-Visit-4285F4?style=flat-square&logo=google-chrome)](https://brenocrepaldi.vercel.app)
+
+### Support the Project
+
+If you find this project helpful:
+
+- ⭐ **Star the repository** on GitHub
+- 🐛 **Report bugs** you encounter
+- 💡 **Suggest features** you'd like to see
+- 📖 **Improve documentation**
+- 🔀 **Submit pull requests**
+- 📢 **Share with others** who might benefit
+
+### Acknowledgments
+
+Special thanks to:
+
+- **React Team** - For the amazing framework
+- **Vite Team** - For lightning-fast tooling
+- **Socket.IO Team** - For real-time communication
+- **Tailwind CSS** - For utility-first CSS
+- **Open Source Community** - For inspiration and support
 
 ---
 
 <div align="center">
-  Made with ❤️ by Breno Crepaldi
+  
+  ### ⭐ Star this repository if you find it helpful!
+  
+  **Made by [Breno Crepaldi](https://github.com/brenocrepaldi)**
+  
+  *Finance Chat Bot - Making personal finance management conversational and intuitive*
+  
+  ---
+  
+  **© 2026 Breno Crepaldi. All rights reserved.**
+  
+  [🔝 Back to Top](#finance-chat-bot---frontend)
+  
 </div>
